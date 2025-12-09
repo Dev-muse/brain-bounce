@@ -1,7 +1,7 @@
 "use client";
-
-import { signUpSchema } from "@/app/schemas/auth";
-import { Button } from "@/components/ui/button";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "@/app/schemas/auth";
 import {
   Card,
   CardContent,
@@ -9,43 +9,39 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
-  Field,
-  FieldError,
   FieldGroup,
+  Field,
   FieldLabel,
+  FieldError,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
+import z from "zod";
 import { toast } from "sonner";
-import z, { email } from "zod";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Loader2 } from "lucide-react";
 
-const SignUpPage = () => {
+const LoginPage = () => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const form = useForm({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
-
-  const onSubmit = (data: z.infer<typeof signUpSchema>) => {
+  const onSubmit = (data: z.infer<typeof loginSchema>) => {
     startTransition(async () => {
-      await authClient.signUp.email({
+      await authClient.signIn.email({
         email: data.email,
         password: data.password,
-        name: data.name,
         fetchOptions: {
           onSuccess: () => {
-            toast.success("Account created successfully");
+            toast.success("Logged in successfully");
             router.push("/");
           },
           onError: (error) => {
@@ -58,30 +54,13 @@ const SignUpPage = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
+        <CardTitle>Login</CardTitle>
 
-        <CardDescription>Create an account to get started</CardDescription>
+        <CardDescription>Sign in to get started</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup className="space-y-4">
-            <Controller
-              name="name"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field>
-                  <FieldLabel>Name</FieldLabel>
-                  <Input
-                    aria-invalid={!!fieldState.error}
-                    placeholder="John Doe"
-                    {...field}
-                  />
-                  {fieldState.error && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
             <Controller
               name="email"
               control={form.control}
@@ -121,11 +100,11 @@ const SignUpPage = () => {
             <Button disabled={isPending} type="submit">
               {isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  <span>Creating account...</span>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  <span>Logging in...</span>
                 </>
               ) : (
-                "Sign Up"
+                "Login"
               )}
             </Button>
           </FieldGroup>
@@ -135,4 +114,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default LoginPage;
