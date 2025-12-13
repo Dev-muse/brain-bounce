@@ -24,8 +24,8 @@ const Navbar = () => {
           <Link className={buttonVariants({ variant: "ghost" })} href="/">
             Home
           </Link>
-          <Link href="/blog" className={buttonVariants({ variant: "ghost" })}>
-            Blog{" "}
+          <Link href="/bounce" className={buttonVariants({ variant: "ghost" })}>
+            Bounce{" "}
           </Link>
           <Link href="/create" className={buttonVariants({ variant: "ghost" })}>
             Create{" "}

@@ -1,4 +1,5 @@
 "use client";
+import { createBlogPost } from "@/app/actions";
 import { bounceSchema } from "@/app/schemas/blog";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,11 +21,10 @@ import { api } from "@/convex/_generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import z from "zod";
-import { useRouter } from "next/navigation";
 
 const CreatePage = () => {
   const [isPending, startTransition] = useTransition();
@@ -41,12 +41,10 @@ const CreatePage = () => {
     },
   });
 
-  const onSubmit = ({ title, content }: z.infer<typeof bounceSchema>) => {
-    startTransition(() => {
-      mutation({ title, content });
+  const onSubmit = (data: z.infer<typeof bounceSchema>) => {
+    startTransition(async () => {
+      await createBlogPost(data);
       form.reset();
-      toast("Bounce created successfully");
-      router.push("/");
     });
   };
 
