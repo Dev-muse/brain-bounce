@@ -16,11 +16,23 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { api } from "@/convex/_generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "convex/react";
+import { Loader2 } from "lucide-react";
+import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
+import { useRouter } from "next/navigation";
 
 const CreatePage = () => {
+  const [isPending, startTransition] = useTransition();
+
+  const router = useRouter();
+  // convex mutation
+  const mutation = useMutation(api.posts.createPost);
+
   const form = useForm({
     resolver: zodResolver(bounceSchema),
     defaultValues: {
@@ -29,8 +41,13 @@ const CreatePage = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof bounceSchema>) => {
-    console.log(data);
+  const onSubmit = ({ title, content }: z.infer<typeof bounceSchema>) => {
+    startTransition(() => {
+      mutation({ title, content });
+      form.reset();
+      toast("Bounce created successfully");
+      router.push("/");
+    });
   };
 
   return (
@@ -91,7 +108,16 @@ const CreatePage = () => {
                     </Field>
                   )}
                 />
-                <Button type="submit">Create Bounce</Button>
+                <Button type="submit" disabled={isPending}>
+                  {isPending ? (
+                    <>
+                      <Loader2 className="mr-2  size-4 animate-spin" />
+                      <span>Creating Bounce...</span>
+                    </>
+                  ) : (
+                    "Create Bounce"
+                  )}
+                </Button>
               </FieldGroup>
             </form>
           </CardContent>
