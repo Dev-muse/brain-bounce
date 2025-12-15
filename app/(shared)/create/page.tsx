@@ -38,6 +38,7 @@ const CreatePage = () => {
     defaultValues: {
       title: "",
       content: "",
+      image: undefined,
     },
   });
 
@@ -98,6 +99,29 @@ const CreatePage = () => {
                       <Textarea
                         placeholder="Write your idea and set the context for contributors."
                         {...field}
+                        aria-invalid={!!fieldState.error}
+                      />
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="image"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field>
+                      <FieldLabel>Image</FieldLabel>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            field.onChange(file);
+                          }
+                        }}
                         aria-invalid={!!fieldState.error}
                       />
                       {fieldState.error && (

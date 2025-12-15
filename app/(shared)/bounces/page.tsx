@@ -6,15 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { fetchQuery } from "convex/nextjs";
-import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-
-type Props = {};
 
 const BouncesPage = async () => {
   return (
@@ -44,11 +41,12 @@ async function LoadPosts() {
           <div className="relative h-48 w-full overflow-hidden">
             <Image
               src={
+                post.imageUrl ??
                 "https://images.unsplash.com/photo-1761839257961-4dce65b72d99"
               }
               alt="farm"
               fill
-              className="rounded-t-lg"
+              className="rounded-t-lg object-cover"
             />
           </div>
           <CardContent className="h-24">
@@ -77,8 +75,6 @@ async function LoadPosts() {
   );
 }
 
-export default BouncesPage;
-
 const SkeletonPosts = () => {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -97,3 +93,4 @@ const SkeletonPosts = () => {
     </div>
   );
 };
+export default BouncesPage;
