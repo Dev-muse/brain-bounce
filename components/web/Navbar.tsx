@@ -16,7 +16,7 @@ const Navbar = () => {
       <div className="flex items-center gap-8 ">
         <Link href="/">
           <h1 className="text-3xl font-bold">
-            Brain <span className=" text-blue-600">Bounce</span>{" "}
+            Brain <span className=" text-primary">Bounce</span>{" "}
           </h1>
         </Link>
 
@@ -24,8 +24,11 @@ const Navbar = () => {
           <Link className={buttonVariants({ variant: "ghost" })} href="/">
             Home
           </Link>
-          <Link href="/bounce" className={buttonVariants({ variant: "ghost" })}>
-            Bounce{" "}
+          <Link
+            href="/bounces"
+            className={buttonVariants({ variant: "ghost" })}
+          >
+            Bounces{" "}
           </Link>
           <Link href="/create" className={buttonVariants({ variant: "ghost" })}>
             Create{" "}
