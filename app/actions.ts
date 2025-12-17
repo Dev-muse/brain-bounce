@@ -6,6 +6,8 @@ import { fetchMutation } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { redirect } from "next/navigation";
 import { getToken } from "@/lib/auth-server";
+import { revalidate } from "./(shared)/bounces/page";
+import { revalidatePath } from "next/cache";
 
 export const createBlogPost = async (values: z.infer<typeof bounceSchema>) => {
   try {
@@ -76,6 +78,6 @@ export const createBlogPost = async (values: z.infer<typeof bounceSchema>) => {
       error: "Failed to create post",
     };
   }
-
+  revalidatePath("/bounces");
   return redirect("/bounces");
 };

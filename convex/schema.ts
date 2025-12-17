@@ -9,4 +9,12 @@ export default defineSchema({
     authorId: v.string(),
     imageStorageId: v.optional(v.id("_storage")),
   }),
+
+  // COMMENTS TABLE
+  comments: defineTable({
+    authorId: v.string(),
+    authorName: v.string(),
+    postId: v.id("posts"),
+    body: v.string(),
+  }),
 });

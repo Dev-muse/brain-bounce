@@ -13,6 +13,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 
+export const dynamic = "force-static";
+// force-static | force-dynamic | auto | error
+
+// export const revalidate = 60; //current in seconds:  revalidation time based or on demand
+// 0 | false | number
+
 const BouncesPage = async () => {
   return (
     <section className="py-12">
@@ -50,7 +56,7 @@ async function LoadPosts() {
             />
           </div>
           <CardContent className="h-24">
-            <Link href={`/bounce/${post._id}`}>
+            <Link href={`/bounces/${post._id}`}>
               <CardHeader>
                 <CardTitle className="text-2xl font-bold hover:text-primary">
                   {post.title}
@@ -64,7 +70,7 @@ async function LoadPosts() {
               className={buttonVariants({
                 className: "w-full",
               })}
-              href={`/bounce/${post._id}`}
+              href={`/bounces/${post._id}`}
             >
               Read More
             </Link>
