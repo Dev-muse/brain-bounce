@@ -1,24 +1,37 @@
 "use client";
 
-import { Loader2, MessageSquare } from "lucide-react";
-import { Card, CardContent, CardHeader } from "../ui/card";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { commentSchema } from "@/app/schemas/comment";
-import { Field, FieldLabel, FieldError } from "../ui/field";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
-import { useParams } from "next/navigation";
-import { Id } from "@/convex/_generated/dataModel";
-import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { toast } from "sonner";
+import { Id } from "@/convex/_generated/dataModel";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Preloaded, useMutation, usePreloadedQuery } from "convex/react";
+import { Loader2, MessageSquare } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useTransition } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { Field, FieldError, FieldLabel } from "../ui/field";
+import { Separator } from "../ui/separator";
+import { Textarea } from "../ui/textarea";
 
-const CommentSection = () => {
+const CommentSection = (props: {
+  preloadedComments: Preloaded<typeof api.comments.getCommentsByPostId>;
+}) => {
   const params = useParams<{ bounceId: Id<"posts"> }>();
+
+  /*option 1: real time updates, convex will update the comments when a new comment is added
+  only get reactivity in client components if you use fetchQuery the server analog of useQuery no reactivity
+  const comments = useQuery(api.comments.getCommentsByPostId, {
+    postId: params.bounceId,
+  });
+*/
+
+  //option 2: preloaded comments
+  const comments = usePreloadedQuery(props.preloadedComments);
 
   const [isPending, startTransition] = useTransition();
 
@@ -45,13 +58,23 @@ const CommentSection = () => {
       }
     });
   };
+
+  if (comments === undefined) {
+    return (
+      <div className="flex gap-2 items-center">
+        <Loader2 className="animate-spin" />
+        <p>Loading comments...</p>
+      </div>
+    );
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-2 border-b">
         <MessageSquare className="size-5" />
-        <h2 className="text-xl font-semibold">4 Comments</h2>
+        <h2 className="text-xl font-semibold">{comments.length} Comments</h2>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-6">
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <Controller
             name="body"
@@ -79,6 +102,41 @@ const CommentSection = () => {
             )}
           </Button>
         </form>
+
+        {comments?.length > 0 && <Separator />}
+        <section className="space-y-6">
+          {comments?.map((comment) => (
+            <div key={comment._id} className="flex gap-4 ">
+              <Avatar className="size-10 shrink-0 ">
+                <AvatarImage
+                  src={`https://avatar.vercel.sh/${comment.authorName}`}
+                  alt={comment.authorName}
+                />
+                <AvatarFallback>
+                  {comment.authorName.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 space-y-1">
+                <div className="flex gap-4 items-center justify-between">
+                  <p className="font-semibold text-sm">{comment.authorName}</p>
+                  <p className="text-muted-foreground text-xs">
+                    {new Date(comment._creationTime).toLocaleDateString(
+                      "en-UK",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      }
+                    )}
+                  </p>
+                </div>
+                <p className="text-foreground/90 text-sm whitespace-pre-wrap leading-relaxed ">
+                  {comment.body}
+                </p>
+              </div>
+            </div>
+          ))}
+        </section>
       </CardContent>
     </Card>
   );

@@ -1,13 +1,12 @@
-import React from "react";
-import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import Image from "next/image";
-import { Id } from "@/convex/_generated/dataModel";
-import { fetchQuery } from "convex/nextjs";
-import { api } from "@/convex/_generated/api";
 import { Separator } from "@/components/ui/separator";
 import CommentSection from "@/components/web/CommentSection";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { fetchQuery, preloadQuery } from "convex/nextjs";
+import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 interface BouncePostIdProps {
   params: Promise<{ bounceId: Id<"posts"> }>;
@@ -16,7 +15,11 @@ interface BouncePostIdProps {
 const BouncePostId = async ({ params }: BouncePostIdProps) => {
   const { bounceId } = await params;
 
-  const post = await fetchQuery(api.posts.getPostById, { postId: bounceId });
+  // performance optimisation: run requests in parrallel instead of sequentially because they don't depend on each other
+  const [post, preloadedComments] = await Promise.all([
+    fetchQuery(api.posts.getPostById, { postId: bounceId }),
+    preloadQuery(api.comments.getCommentsByPostId, { postId: bounceId }),
+  ]);
 
   if (!post) {
     return <div>Post not found</div>;
@@ -63,7 +66,7 @@ const BouncePostId = async ({ params }: BouncePostIdProps) => {
       </p>
 
       <Separator className="my-8" />
-      <CommentSection />
+      <CommentSection preloadedComments={preloadedComments} />
     </div>
   );
 };

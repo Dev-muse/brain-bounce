@@ -1,13 +1,12 @@
 "use server";
 
+import { api } from "@/convex/_generated/api";
+import { getToken } from "@/lib/auth-server";
+import { fetchMutation } from "convex/nextjs";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import z from "zod";
 import { bounceSchema } from "./schemas/blog";
-import { fetchMutation } from "convex/nextjs";
-import { api } from "@/convex/_generated/api";
-import { redirect } from "next/navigation";
-import { getToken } from "@/lib/auth-server";
-import { revalidate } from "./(shared)/bounces/page";
-import { revalidatePath } from "next/cache";
 
 export const createBlogPost = async (values: z.infer<typeof bounceSchema>) => {
   try {
@@ -18,13 +17,14 @@ export const createBlogPost = async (values: z.infer<typeof bounceSchema>) => {
       throw new Error("something went wrong");
     }
 
+    // convex mutation on server(needs jwt token) unlike in the client component useMutation hook(don't need jwt token)
     const token = await getToken();
 
-    // generate image upload url
+    // step 1: generate image upload url
     const imageUrl = await fetchMutation(
       api.posts.generateImageUploadUrl,
       {},
-      { token } //token is needed for authentication for any server side convex mutation
+      { token }
     );
 
     if (!imageUrl) {
@@ -33,6 +33,7 @@ export const createBlogPost = async (values: z.infer<typeof bounceSchema>) => {
       };
     }
 
+    // step 2: upload the file to the generated URL
     const uploadResult = await fetch(imageUrl, {
       method: "POST",
       headers: {
@@ -55,7 +56,7 @@ export const createBlogPost = async (values: z.infer<typeof bounceSchema>) => {
       };
     }
 
-    // convex mutation on server(needs jwt token) unlike in the client component useMutation hook(don't need jwt token)
+    // step 3: save the file ID to the database
     await fetchMutation(
       api.posts.createPost,
       {
