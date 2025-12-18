@@ -5,12 +5,27 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { fetchQuery, preloadQuery } from "convex/nextjs";
 import { ArrowLeft } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 interface BouncePostIdProps {
   params: Promise<{ bounceId: Id<"posts"> }>;
 }
+
+export const generateMetadata = async ({
+  params,
+}: BouncePostIdProps): Promise<Metadata> => {
+  const { bounceId } = await params;
+
+  const post = await fetchQuery(api.posts.getPostById, { postId: bounceId });
+
+  if (!post) {
+    return { title: "Post not found", description: "Post not found" };
+  }
+
+  return { title: post.title, description: post.content };
+};
 
 const BouncePostId = async ({ params }: BouncePostIdProps) => {
   const { bounceId } = await params;

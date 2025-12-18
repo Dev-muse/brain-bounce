@@ -9,6 +9,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { fetchQuery } from "convex/nextjs";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -18,6 +19,14 @@ export const dynamic = "force-static";
 
 // export const revalidate = 60; //current in seconds:  revalidation time based or on demand
 // 0 | false | number
+
+export const metadata: Metadata = {
+  title: "Bounces | Brainbounce",
+  description: "Check out our latest bounces",
+  category: "Ideation",
+  authors: [{ name: "Rahman Muse" }],
+  keywords: ["Bounces", "Ideation", "Brainstorming", "Innovation"],
+};
 
 const BouncesPage = async () => {
   return (

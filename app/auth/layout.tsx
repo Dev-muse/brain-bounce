@@ -1,7 +1,16 @@
 import { buttonVariants } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Auth | Brainbounce",
+  description: "Login or register to get started",
+  category: "Ideation",
+  authors: [{ name: "Rahman Muse" }],
+  keywords: ["Brainbounce", "Ideation", "Brainstorming", "Innovation"],
+};
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
