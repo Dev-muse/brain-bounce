@@ -1,8 +1,10 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import CommentSection from "@/components/web/CommentSection";
+import PostPresence from "@/components/web/PostPresence";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { getToken } from "@/lib/auth-server";
 import { fetchQuery, preloadQuery } from "convex/nextjs";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
@@ -30,10 +32,13 @@ export const generateMetadata = async ({
 const BouncePostId = async ({ params }: BouncePostIdProps) => {
   const { bounceId } = await params;
 
+  const token = await getToken();
+
   // performance optimisation: run requests in parrallel instead of sequentially because they don't depend on each other
-  const [post, preloadedComments] = await Promise.all([
-    fetchQuery(api.posts.getPostById, { postId: bounceId }),
-    preloadQuery(api.comments.getCommentsByPostId, { postId: bounceId }),
+  const [post, preloadedComments, userId] = await Promise.all([
+    await fetchQuery(api.posts.getPostById, { postId: bounceId }),
+    await preloadQuery(api.comments.getCommentsByPostId, { postId: bounceId }),
+    await fetchQuery(api.presence.getUserId, {}, { token }),
   ]);
 
   if (!post) {
@@ -66,14 +71,17 @@ const BouncePostId = async ({ params }: BouncePostIdProps) => {
         <h1 className="text-4xl tracking-tight font-extrabold text-foreground capitalize">
           {post.title}
         </h1>
-        <p className="text-muted-foreground">
-          Posted on:{" "}
-          {new Date(post._creationTime).toLocaleDateString("en-UK", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="text-muted-foreground">
+            Posted on:{" "}
+            {new Date(post._creationTime).toLocaleDateString("en-UK", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
+          {userId && <PostPresence roomId={post._id} userId={userId} />}
+        </div>
       </div>
       <Separator className="my-8" />
       <p className="text-lg text-foreground/90 leading-relaxed whitespace-pre-wrap ">
