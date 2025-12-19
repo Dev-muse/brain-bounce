@@ -10,6 +10,7 @@ import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 interface BouncePostIdProps {
   params: Promise<{ bounceId: Id<"posts"> }>;
@@ -43,6 +44,11 @@ const BouncePostId = async ({ params }: BouncePostIdProps) => {
 
   if (!post) {
     return <div>Post not found</div>;
+  }
+
+  // multi layered auth check if proxy fails
+  if (!userId) {
+    redirect("/auth/login");
   }
   return (
     <div className="max-w-3xl mx-auto py-8 px-4 relative animate-in fade-in duration-300 ease-in-out">
