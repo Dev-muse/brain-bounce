@@ -3,7 +3,7 @@
 import { api } from "@/convex/_generated/api";
 import { getToken } from "@/lib/auth-server";
 import { fetchMutation } from "convex/nextjs";
-import { revalidatePath } from "next/cache";
+import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import z from "zod";
 import { bounceSchema } from "./schemas/blog";
@@ -79,6 +79,8 @@ export const createBlogPost = async (values: z.infer<typeof bounceSchema>) => {
       error: "Failed to create post",
     };
   }
-  revalidatePath("/bounces");
+
+  // revalidatePath("/bounces");//don't use with cache components
+  updateTag("posts"); // only use with cache components
   return redirect("/bounces");
 };

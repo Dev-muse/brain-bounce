@@ -10,14 +10,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { fetchQuery } from "convex/nextjs";
 import { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
+import { connection } from "next/server";
 import { Suspense } from "react";
 
-export const dynamic = "force-static";
+// export const dynamic = "force-static";
 // force-static | force-dynamic | auto | error
 
-// export const revalidate = 60; //current in seconds:  revalidation time based or on demand
+// export const revalidate = 3600; //current in seconds:  revalidation time based or on demand
 // 0 | false | number
 
 export const metadata: Metadata = {
@@ -47,8 +49,12 @@ const BouncesPage = async () => {
 };
 
 async function LoadPosts() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  "use cache";
+  cacheLife("hours");
+
+  cacheTag("posts");
   const posts = await fetchQuery(api.posts.getPosts);
+
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {posts?.map((post) => (
