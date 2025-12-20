@@ -3,11 +3,12 @@
   <p><strong>Where Ideas Take Flight</strong></p>
   <p>Share early-stage ideas, get crystal-clear feedback, and iterate faster with Brain Bounce — the collaborative ideation platform built for innovators.</p>
 
-  ![Next.js](https://img.shields.io/badge/Next.js-16.0-black?style=for-the-badge&logo=next.js)
-  ![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react)
-  ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript)
-  ![Convex](https://img.shields.io/badge/Convex-Backend-FF6B6B?style=for-the-badge)
-  ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38B2AC?style=for-the-badge&logo=tailwind-css)
+![Next.js](https://img.shields.io/badge/Next.js-16.0-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript)
+![Convex](https://img.shields.io/badge/Convex-Backend-FF6B6B?style=for-the-badge)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38B2AC?style=for-the-badge&logo=tailwind-css)
+
 </div>
 
 ---
@@ -31,14 +32,16 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
 ### 🚀 Current Features
 
 #### Core Functionality
+
 - **🎨 Create Bounces**: Post your ideas with titles, detailed descriptions, and supporting images
 - **📋 Browse All Bounces**: Explore a beautifully designed grid of ideas from the community
-- **🔍 Global Search** *(NEW)*: Instantly search across all bounces by title or content
+- **🔍 Global Search** _(NEW)_: Instantly search across all bounces by title or content
 - **💬 Comment System**: Engage in threaded discussions with detailed feedback
 - **👀 Real-Time Presence**: See who's currently viewing each bounce
 - **🖼️ Image Uploads**: Upload and attach images to give your ideas visual context
 
 #### User Experience
+
 - **🔐 Secure Authentication**: Email/password authentication powered by Better Auth
 - **🌓 Dark/Light Mode**: Seamless theme switching for comfortable viewing
 - **📱 Fully Responsive**: Optimized experience across desktop, tablet, and mobile
@@ -46,6 +49,7 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
 - **🎭 Beautiful UI**: Modern design with Radix UI components and smooth animations
 
 #### Technical Excellence
+
 - **🔄 Real-Time Updates**: Convex backend ensures instant data synchronization
 - **✅ Form Validation**: Client-side validation with Zod schemas
 - **🎪 Loading States**: Skeleton screens and optimistic UI updates
@@ -57,6 +61,7 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
 ## 🛣️ Roadmap & Future Features
 
 ### 🎯 Phase 1: Enhanced Collaboration (Coming Soon)
+
 - [ ] **Voting System**: Upvote/downvote bounces and comments
 - [ ] **Bounce Categories**: Organize ideas by topics (Tech, Business, Creative, etc.)
 - [ ] **User Profiles**: Customizable profiles showcasing your bounces and activity
@@ -64,6 +69,7 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
 - [ ] **Notifications**: Real-time alerts for comments, votes, and mentions
 
 ### 🎯 Phase 2: Advanced Features
+
 - [ ] **Rich Text Editor**: Enhanced formatting with markdown support
 - [ ] **Collaborative Editing**: Multiple users can contribute to a bounce
 - [ ] **Version History**: Track how ideas evolve over time
@@ -71,6 +77,7 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
 - [ ] **Analytics Dashboard**: Insights on your bounce performance
 
 ### 🎯 Phase 3: Community & Growth
+
 - [ ] **Social Authentication**: Sign in with Google, GitHub, and more
 - [ ] **Email Notifications**: Digest emails and activity summaries
 - [ ] **Tags & Filters**: Advanced search with filtering capabilities
@@ -79,6 +86,7 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
 - [ ] **API Access**: Integrate Brain Bounce with external tools
 
 ### 🎯 Phase 4: Enterprise & Scale
+
 - [ ] **AI-Powered Suggestions**: Get smart recommendations and insights
 - [ ] **Integration Ecosystem**: Connect with Slack, Discord, Notion, etc.
 - [ ] **Custom Branding**: White-label options for organizations
@@ -90,6 +98,7 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **[Next.js 16](https://nextjs.org/)** - React framework with App Router
 - **[React 19](https://react.dev/)** - UI library with latest features
 - **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
@@ -100,12 +109,14 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
 - **[Zod](https://zod.dev/)** - Schema validation
 
 ### Backend & Infrastructure
+
 - **[Convex](https://convex.dev/)** - Real-time backend platform
 - **[Better Auth](https://www.better-auth.com/)** - Modern authentication
 - **[@convex-dev/presence](https://www.npmjs.com/package/@convex-dev/presence)** - Real-time presence tracking
 - **Convex Storage** - File storage and CDN
 
 ### Developer Experience
+
 - **[next-themes](https://github.com/pacocoursey/next-themes)** - Theme management
 - **[Sonner](https://sonner.emilkowal.ski/)** - Toast notifications
 - **[clsx](https://github.com/lukeed/clsx) + [tailwind-merge](https://github.com/dcastil/tailwind-merge)** - Class name utilities
@@ -123,12 +134,14 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/Dev-muse/brain-bounce.git
    cd brain-bounce
-  ```
+   ```
 
 2. **Install dependencies**
+
    ```bash
    pnpm install
    # or
@@ -136,17 +149,21 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
    ```
 
 3. **Set up Convex**
+
    ```bash
    npx convex dev
    ```
+
    This will:
+
    - Create a new Convex project (if needed)
    - Generate your `.env.local` file with `CONVEX_DEPLOYMENT`
    - Start the Convex dev server
 
 4. **Configure environment variables**
-   
+
    Create a `.env.local` file in the root directory:
+
    ```env
    CONVEX_DEPLOYMENT=your-deployment-url
    NEXT_PUBLIC_CONVEX_URL=your-convex-url
@@ -155,6 +172,7 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
    ```
 
 5. **Run the development server**
+
    ```bash
    pnpm dev
    # or
@@ -162,7 +180,7 @@ Brain Bounce is a modern ideation platform designed to help individuals and team
    ```
 
 6. **Open your browser**
-   
+
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ### 🎬 First Steps
@@ -240,6 +258,7 @@ npx convex dev
 Brain Bounce uses Convex with the following schema:
 
 **Posts Table**
+
 - `title`: string
 - `content`: string
 - `authorId`: string
@@ -247,6 +266,7 @@ Brain Bounce uses Convex with the following schema:
 - Search indexes on `title` and `content`
 
 **Comments Table**
+
 - `authorId`: string
 - `authorName`: string
 - `postId`: reference to posts
@@ -285,6 +305,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Rahman Muse**
+
 - GitHub: [@Dev-muse](https://github.com/Dev-muse)
 - Project: [Brain Bounce](https://github.com/Dev-muse/brain-bounce)
 
@@ -317,8 +338,7 @@ If you encounter any issues or have questions:
     <a href="https://github.com/Dev-muse/brain-bounce/issues">💡 Request Feature</a>
   </p>
 </div>
-```
-
+ 
 This README is fully branded, comprehensive, and ready to use! It includes:
 
 ✅ Eye-catching header with badges  
@@ -330,6 +350,6 @@ This README is fully branded, comprehensive, and ready to use! It includes:
 ✅ Project structure overview  
 ✅ Development instructions  
 ✅ Contributing guidelines  
-✅ Professional formatting and emojis for visual appeal  
+✅ Professional formatting and emojis for visual appeal
 
 Feel free to customize any sections, add your deployment URL when ready, or adjust the roadmap based on your priorities!
