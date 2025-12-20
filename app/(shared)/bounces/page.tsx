@@ -13,10 +13,7 @@ import { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
-import { connection } from "next/server";
 import { Suspense } from "react";
-
-// export const dynamic = "force-static";
 // force-static | force-dynamic | auto | error
 
 // export const revalidate = 3600; //current in seconds:  revalidation time based or on demand
@@ -49,11 +46,10 @@ const BouncesPage = async () => {
 };
 
 async function LoadPosts() {
-  // "use cache";
-  // cacheLife("hours");
+  "use cache";
+  cacheLife("hours");
+  cacheTag("posts");
 
-  // cacheTag("posts");
-  await connection();
   const posts = await fetchQuery(api.posts.getPosts);
 
   return (
