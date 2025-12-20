@@ -32,7 +32,7 @@ const SearchInput = () => {
           onChange={handleSearchInputChange}
         />
       </div>
-      {open && searchTerm.length > 2 && (
+      {open && searchTerm.length >= 2 && (
         <SearchResults
           results={results}
           setOpen={setOpen}

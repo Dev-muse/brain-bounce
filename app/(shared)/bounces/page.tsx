@@ -49,10 +49,11 @@ const BouncesPage = async () => {
 };
 
 async function LoadPosts() {
-  "use cache";
-  cacheLife("hours");
+  // "use cache";
+  // cacheLife("hours");
 
-  cacheTag("posts");
+  // cacheTag("posts");
+  await connection();
   const posts = await fetchQuery(api.posts.getPosts);
 
   return (
