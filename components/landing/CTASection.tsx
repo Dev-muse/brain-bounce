@@ -1,7 +1,25 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Check, Copy, Mail } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function CTASection() {
+  const [copied, setCopied] = useState(false);
+  const email = "a.muse@rapidmuse.com";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    toast.success("Email copied to clipboard!");
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
+
   return (
     <section className="py-32 bg-primary text-primary-foreground relative overflow-hidden">
       {/* Background Patterns */}
@@ -19,22 +37,33 @@ export default function CTASection() {
         <div className="flex flex-col sm:flex-row justify-center gap-6">
           <Link href="/auth/sign-up">
             <Button
-              size="xl"
+              size="lg"
               variant="secondary"
               className="w-full sm:w-auto text-xl font-bold h-16 px-10 rounded-full shadow-2xl hover:scale-105 transition-transform"
             >
               Get Started Now
             </Button>
           </Link>
-          <Link href="/contact">
-            <Button
-              size="xl"
-              variant="outline"
-              className="w-full sm:w-auto text-xl h-16 px-10 rounded-full bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white hover:border-white/50 backdrop-blur-sm"
-            >
-              Contact Sales
-            </Button>
-          </Link>
+
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={handleCopy}
+            className="w-full sm:w-auto text-xl h-16 px-10 rounded-full bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white hover:border-white/50 backdrop-blur-sm group"
+          >
+            {copied ? (
+              <>
+                <Check className="mr-2 h-5 w-5" />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Mail className="mr-2 h-5 w-5 group-hover:hidden" />
+                <Copy className="mr-2 h-5 w-5 hidden group-hover:block" />
+                Contact Developer
+              </>
+            )}
+          </Button>
         </div>
       </div>
     </section>
