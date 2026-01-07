@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "admired-elephant-261.convex.cloud",
       },
+      {
+        protocol: "https",
+        hostname: "standing-oriole-929.convex.cloud",
+      },
     ],
   },
 };

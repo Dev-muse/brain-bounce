@@ -2,6 +2,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import CommentSection from "@/components/web/CommentSection";
 import PostPresence from "@/components/web/PostPresence";
+import { AIFeedbackSection } from "@/components/web/AIFeedbackSection";
+import { VoteButtons } from "@/components/web/VoteButtons";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { getToken } from "@/lib/auth-server";
@@ -73,26 +75,37 @@ const BouncePostId = async ({ params }: BouncePostIdProps) => {
         />
       </div>
 
-      <div className="space-y-4 flex flex-col">
-        <h1 className="text-4xl tracking-tight font-extrabold text-foreground capitalize">
-          {post.title}
-        </h1>
-        <div className="flex items-center gap-2">
-          <p className="text-muted-foreground">
-            Posted on:{" "}
-            {new Date(post._creationTime).toLocaleDateString("en-UK", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </p>
-          {userId && <PostPresence roomId={post._id} userId={userId} />}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-4">
+          <h1 className="text-4xl tracking-tight font-extrabold text-foreground capitalize">
+            {post.title}
+          </h1>
+          <div className="flex items-center gap-2">
+            <p className="text-muted-foreground text-sm">
+              Posted on:{" "}
+              {new Date(post._creationTime).toLocaleDateString("en-UK", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+            {userId && <PostPresence roomId={post._id} userId={userId} />}
+          </div>
         </div>
+        <VoteButtons
+          postId={post._id}
+          initialUpvotes={post.upvotes}
+          initialDownvotes={post.downvotes}
+          className="bg-muted/50 p-2 rounded-xl"
+        />
       </div>
       <Separator className="my-8" />
       <p className="text-lg text-foreground/90 leading-relaxed whitespace-pre-wrap ">
         {post.content}
       </p>
+
+      <Separator className="my-8" />
+      <AIFeedbackSection title={post.title} content={post.content} />
 
       <Separator className="my-8" />
       <CommentSection preloadedComments={preloadedComments} />
